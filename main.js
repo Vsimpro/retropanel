@@ -35,13 +35,19 @@ function join() {
         host:       server.host, // minecraft server ip
         username:   credentials.username, // minecraft username
         password:   credentials.password, // minecraft password, comment out if you want to log into online-mode=false servers            port:       Bot.server.port,                // only set if you need a port that isn't 25565
-        version:    server.version,             // only set if you need a specific version or snapshot (ie: "1.8.9" or "1.16.5"), otherwise it's set automatically
+        //version:    server.version,             // only set if you need a specific version or snapshot (ie: "1.8.9" or "1.16.5"), otherwise it's set automatically
         auth:       credentials.auth              // only set if you need microsoft auth, then set Bot to 'microsoft'
     })
 
     // Log errors and kick reasons:
-    Bot.bot.on('kicked', console.log)
-    Bot.bot.on('error', console.log)
+    Bot.bot.on('kicked', function () {
+        Bot.bot = undefined; 
+        state = false;
+    })
+    Bot.bot.on('error', function () {
+        Bot.bot = undefined;
+        state = false;
+    })
 }
     
 
