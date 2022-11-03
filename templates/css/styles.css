@@ -34,6 +34,15 @@ img {
     margin: 0;
 }
 
+li {
+    margin: -5%;
+    margin-bottom: 5%;
+    margin-left: 50%;
+    list-style: none;
+    width: 20%;
+    border-bottom: 2px solid salmon;
+}
+
 button {
     font-family: pc98;
     border: none;
@@ -107,6 +116,8 @@ button {
     border: 1px solid black;
 }
 
+
+
 #status_icon {
     position: absolute;
     margin: 12px;
@@ -122,4 +133,21 @@ button {
         margin: auto;
         width: 60%;
     }
+}
+
+@media (max-width: 540px) {
+
+    .side {
+        padding-left: 2px;
+        text-align: left;
+    }
+    li {
+        margin: 0;
+        margin-right: 10%;
+    }
+
+    .panel_head {
+        margin-left: 0;
+        margin-right: 0;
+    };
 }
