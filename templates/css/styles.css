@@ -7,6 +7,7 @@
   }
 
 body {
+    font-size: 18px;
     margin: auto;
     text-align: center;
     padding-top: 2%;
@@ -16,8 +17,6 @@ body {
 
 h1 {
     margin: auto;
-    margin-top: 0px;
-    margin-right: 5%;
     width: 100%;
     text-align: center;
     background-color: lightgrey;
@@ -29,7 +28,6 @@ h2 {
 
 p {
     padding-bottom: 5%;
-
 }
 
 img {
@@ -46,21 +44,20 @@ button {
     border-right: 2px solid grey;
     padding-top: 2.5px;
     padding-bottom: 2.5px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     margin-bottom: 10px;
-    margin-left: 20px;
     font-size: 16px;
 }
 
 .panel_head {
     background-color: darkblue;
     color: white;
-    margin-right: 15%;
-    margin-left: 15%;
+    margin-right: 20%;
+    margin-left: 20%;
     text-shadow: 2px 2px black;
     padding-top: 1%;
     padding-bottom: 0.5%;
@@ -88,26 +85,33 @@ button {
 
 
 .status {
-    width: 55%;
+    font-size: 20px;
+    width: 35%;
     float: left;
     text-align: left;  
-    padding-left: 5%;
+    padding-left: 2%;
+    padding-right: 10%;
+    padding-top: 1%;
     background-color: bisque;
-
     box-shadow: 2px 2px rgb(44, 44, 44);
     border: 1px solid black;
 }
 
 .side {
     float: right;
-    width: 35%;
-    margin-right: 0%;
-    margin: auto;
+    width: 45%;
+    margin-right: 1%;
     vertical-align: top;
     background-color: bisque;
     box-shadow: 3px 3px rgb(61, 61, 61);
     border: 1px solid black;
 }
+
+#status_icon {
+    position: absolute;
+    margin: 12px;
+}
+
 
 #bot_status {
     text-shadow: 2px 2px black;
@@ -116,6 +120,6 @@ button {
 @media (min-width: 1080px) {
     .main {
         margin: auto;
-        width: 40%;
+        width: 60%;
     }
 }
