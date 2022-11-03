@@ -1,6 +1,7 @@
 # RetroPanel
 RetroPanel is a panel made monitor and control Minecraft bot(s)
 
+![alt text](https://github.com/Vsimpro/retropanel/blob/main/images/UI.png)
 
 ## Usage
 
