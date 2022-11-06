@@ -43,6 +43,5 @@ You should run the application on an inward facing webserver, for example a resp
  
 ## Todo's
 - Add functionalities
-- Live status
 - Multiple bot support
 - Credentials from file
