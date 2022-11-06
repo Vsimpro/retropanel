@@ -8,6 +8,11 @@ const app = express();
 app.use(express.static('public'))
 
 var state = false;
+var Chat;
+
+var ChatLog = [
+
+]
 
 const port = 5501;
 const host = "http://0.0.0.0"
@@ -41,25 +46,35 @@ function join() {
 
     // Log errors and kick reasons:
     Bot.bot.on('kicked', function () {
+        console.log("Kicked.")
         Bot.bot = undefined; 
         state = false;
     })
     Bot.bot.on('error', function () {
+        console.log("Error.")
         Bot.bot = undefined;
         state = false;
     })
 }
-    
-
 
 function chatMessages(bot) {
+    if (Bot.bot == undefined) { return }
+    
+
     bot.on('chat', (username, message) => {
-    if (username === bot.username) return
-    //bot.chat(message)
+        let message_log = {}
+    
+        if (username === bot.username) return
+
+    message_log["username"] = username;
+    message_log["msg"] = message;
+    
+    ChatLog.push(message_log)
+
     console.log("[+] " + username + " : " + message)
     })
-
 }
+
 
 app.get("/off", async(request, response) => {
     state = false
@@ -76,18 +91,22 @@ app.get("/off", async(request, response) => {
 
 app.get("/on", async(request, response) => {
     state = true;
-    
+    let message = {"bot_status":"error"}
+
     join()
-    chatMessages(Bot.bot)
     
     if (Bot.bot != undefined) {
-        response.send({"bot_status":"online"});
+        message = {"bot_status":"online"};
         console.log("[BOT] on")
-        return
     } 
-
-    response.send({"bot_status":"error"});
+    setTimeout(function(){ chatMessages(Bot.bot) }, 0);
+    response.send(message);
 }); 
+
+app.get("/chat", async (request, response) => {
+    response.send(ChatLog);
+});
+
 
 app.get("/status", async (request, response) => {
     response.send({"status":state});

@@ -7,16 +7,27 @@
     </head>
     
     <body>
+        <br>
         <div class="main">
 
-            <h1> <span class="panel_head">Retro_panel</span> 
-                <a class="exit" href="https://google.com">
-                    <img src="img/msg_error-0.png" width="18px"></a></h1>
+            <h1><span class="panel_head">Retro_panel</span></h1>
             <br>
+
+            <nav> Resources:
+                <ul>
+                    <li>
+                        <a href="">>> Documentation.</a>
+                    </li>
+            </nav>
+            
+            </article>
 
             <div class="content">
                 <div class="status">
-                    
+                    <p> <span class="orange_title">Currently implemented:</span> </p>
+                        
+                            <p class="afk">Afk <br>
+                            Press "on" to activate the bot. </p>
                     <h2> Status: <span id="bot_status">unknown</span> 
                         <img id="status_icon" src="img/computer_2-4.png" width="16px"> </h2>
                     
@@ -28,19 +39,12 @@
                         <span id="bot_status_dec"></span>
                         
                     </p>
-                </div>
-                <div class="side">
-                    <p>
-                        Currently implemented:
-                        <ul>
-                            <li> Afk</li>
-                            
-                        </ul>
-                        Press "on" to activate the bot.
-                    </p>
+                    <p> <span class="orange_title">Chat:</span> </p>
+                        <ul class="chat" id="chat"></ul>
                 </div>
             </div>
         </div>
+        
     </body>
     <script src="js/index.js"> </script>
 </html>
