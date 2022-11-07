@@ -140,4 +140,11 @@ window.onload = function() {
 
         document.getElementById("chat_box").value = ""
     })
+
+    document.getElementById("chat_box").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") { // pressing enter triggers the "+" button
+             event.preventDefault();
+             document.getElementById("send_msg").click();
+        }
+     });
 }

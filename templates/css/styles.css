@@ -62,6 +62,7 @@ img {
 
 input {
     width: 75%;
+    border:5px solid white;
 }
 
 button {
