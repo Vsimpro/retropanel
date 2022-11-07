@@ -25,7 +25,7 @@ function stop_bot() {
 
 async function set_status() {
     while (true) {
-        sleepFor(400);
+        sleepFor(10);
         let state = "black"
         let status = "unknown" 
         let icon = "img/computer_2-4.png"
@@ -109,7 +109,35 @@ function refreshChat() {
     }
 }
 
+function send_message(message) {
+    fetch('http://localhost:5501/send', {
+        method: 'POST',
+        headers: {
+            'message' : message,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "id": 78912 })
+    })
+}
 
-setTimeout(function(){ set_status() }, 0);
-refreshChat()
 
+
+window.onload = function() {
+    
+    setTimeout(function(){ set_status() }, 0);
+
+    refreshChat()
+
+    document.getElementById("send_msg").addEventListener("click", function() {
+        let msg = document.getElementById("chat_box").value;
+        
+        if (msg.length == 0) {
+            return
+        }
+
+        msg.slice(255, msg.length)
+        send_message(msg)
+
+        document.getElementById("chat_box").value = ""
+    })
+}

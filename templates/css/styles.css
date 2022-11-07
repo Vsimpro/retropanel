@@ -60,6 +60,10 @@ img {
     margin: 0;
 }
 
+input {
+    width: 75%;
+}
+
 button {
     font-family: pc98;
     border: none;

@@ -1,8 +1,10 @@
+var fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const express = require("express");
 const { response } = require('express');
 const mineflayer = require('mineflayer');
+const { mineflayer: mineflayerViewer } = require('prismarine-viewer');
 
 const app = express();
 app.use(express.static('public'))
@@ -17,17 +19,22 @@ var ChatLog = [
 const port = 5501;
 const host = "http://0.0.0.0"
 
-const credentials = {
-    username    : "",
-    password    : "",
-    auth        : "microsoft"
+var credentials = {
+    "username"    : "",
+    "password "   : "",
+    "auth "       : "microsoft"
 }
 
-const server = {
-    host    : "",
-    port    : "25565",
-    version : "1.19"
+var server = {
+    "host"    : "",
+    "port"    : "25565",
+    "version" : "1.19"
 }
+
+let content = fs.readFileSync(process.cwd() + "/" + "config.json").toString()
+
+server = JSON.parse(content).config.server
+credentials = JSON.parse(content).config.credentials
 
 class Bot {
     constructor() {
@@ -37,11 +44,11 @@ class Bot {
 function join() {
     Bot.bot = mineflayer.createBot({
         
-        host:       server.host, // minecraft server ip
-        username:   credentials.username, // minecraft username
-        password:   credentials.password, // minecraft password, comment out if you want to log into online-mode=false servers            port:       Bot.server.port,                // only set if you need a port that isn't 25565
+        host:       server["host"], // minecraft server ip
+        username:   credentials["username"], // minecraft username
+        password:   credentials["password"], // minecraft password, comment out if you want to log into online-mode=false servers            port:       Bot.server.port,                // only set if you need a port that isn't 25565
         //version:    server.version,             // only set if you need a specific version or snapshot (ie: "1.8.9" or "1.16.5"), otherwise it's set automatically
-        auth:       credentials.auth              // only set if you need microsoft auth, then set Bot to 'microsoft'
+        auth:       credentials["auth"]              // only set if you need microsoft auth, then set Bot to 'microsoft'
     })
 
     // Log errors and kick reasons:
@@ -55,16 +62,14 @@ function join() {
         Bot.bot = undefined;
         state = false;
     })
+    
 }
 
 function chatMessages(bot) {
     if (Bot.bot == undefined) { return }
     
-
     bot.on('chat', (username, message) => {
         let message_log = {}
-    
-        if (username === bot.username) return
 
     message_log["username"] = username;
     message_log["msg"] = message;
@@ -116,6 +121,12 @@ app.use(express.static(__dirname + "/templates/"));
 app.use(cors({
     origin: 'http://127.0.0.1:5500'
 }));
+
+app.post("/send", function(req, res) {
+    if (Bot.bot != undefined) {
+        Bot.bot.chat(req.headers.message)    
+    }
+});
 
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "/templates" + '/index.html'));
