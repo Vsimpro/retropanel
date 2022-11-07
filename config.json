@@ -1,0 +1,15 @@
+{   
+    "config" : {
+        "credentials" : {
+        "username"    : "",
+        "password"    : "",
+        "auth"        : "microsoft"
+        },
+    
+        "const server" : {
+            "host"    : "",
+            "port"    : "25565",
+            "version" : "1.19"
+            }
+    }
+}
