@@ -9,8 +9,10 @@ const { mineflayer: mineflayerViewer } = require('prismarine-viewer');
 const app = express();
 app.use(express.static('public'))
 
-var state = false;
 var Chat;
+var state = false;
+var logToggle = false;
+var player_movement = []
 
 var ChatLog = [
 
@@ -50,38 +52,73 @@ function join() {
         //version:    server.version,             // only set if you need a specific version or snapshot (ie: "1.8.9" or "1.16.5"), otherwise it's set automatically
         auth:       credentials["auth"]              // only set if you need microsoft auth, then set Bot to 'microsoft'
     })
+    Bot.bot.on('physicTick', () => {
+        if (logToggle == false) {
+            return;
+        }
+        let Entity = Object.entries(Bot.bot.entities)
+            for (let i = 0; i < Entity.length; i++) {
+                if (Entity[i][1].name == "player" && Entity[i][1].username != Bot.bot.player.username) {
+                    var selected = Entity[i][1]
+                    pos_x = selected.position.x
+                    pos_z = selected.position.z
+            
+                    if (pos_x < 0) {
+                        pos_x = Math.ceil(pos_x)
+                    } else {
+                        pos_x = Math.floor(pos_x)
+                    }
+            
+                    if (pos_z < 0) {
+                        pos_z = Math.ceil(pos_z)
+                    } else {
+                        pos_z = Math.floor(pos_z)
+                    }
+                    
+                    console.log(selected.username, pos_x, pos_z) 
+                    
+                }
+            }
+    })
+
+    Bot.bot.on("spawn", function() {
+        ChatLog.push({"username" : "RETROPANEL", "msg":" -- bot joined --"})
+    })
+
+    Bot.bot.on('chat', (username, message) => {
+        let message_log = {}
+
+        message_log["username"] = username;
+        message_log["msg"] = message;
+        ChatLog.push(message_log)
+        console.log("[+] " + username + " : " + message)
+    })
 
     // Log errors and kick reasons:
     Bot.bot.on('kicked', function () {
         console.log("Kicked.")
+        ChatLog.push({"username" : "SERVER", "msg":" -- bot kicked --"})
         Bot.bot = undefined; 
         state = false;
     })
     Bot.bot.on('error', function () {
+        ChatLog.push({"username" : "RETROPANEL", "msg":" ERROR"})
         console.log("Error.")
         Bot.bot = undefined;
         state = false;
     })
     
 }
-
-function chatMessages(bot) {
-    if (Bot.bot == undefined) { return }
-    
-    bot.on('chat', (username, message) => {
-        let message_log = {}
-
-    message_log["username"] = username;
-    message_log["msg"] = message;
-    
-    ChatLog.push(message_log)
-
-    console.log("[+] " + username + " : " + message)
-    })
+function sleepFor(sleepDuration){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ 
+        /* Do nothing */ 
+    }
 }
 
 
 app.get("/off", async(request, response) => {
+    ChatLog.push({"username" : "RETROPANEL", "msg":" -- bot left --"})
     state = false
     if (Bot.bot != undefined) {
         Bot.bot.end();
@@ -91,6 +128,7 @@ app.get("/off", async(request, response) => {
     } else {
         console.log("[BOT] Error disconnecting")
     }
+    
     response.send({"bot_status":"error"});
 });
 
@@ -104,7 +142,7 @@ app.get("/on", async(request, response) => {
         message = {"bot_status":"online"};
         console.log("[BOT] on")
     } 
-    setTimeout(function(){ chatMessages(Bot.bot) }, 0);
+    console.clear()
     response.send(message);
 }); 
 
@@ -123,8 +161,21 @@ app.use(cors({
 }));
 
 app.post("/send", function(req, res) {
+    let msg = req.headers.message;
     if (Bot.bot != undefined) {
-        Bot.bot.chat(req.headers.message)    
+        if (msg.charAt(0) != "/") {
+            Bot.bot.chat(msg)
+            return;
+        }
+        if (msg.includes("track")) {
+            if (logToggle == true) {
+                logToggle = false
+                console.log("[TRACKING] Stopping.")
+                return
+            }
+            console.log("[TRACKING] Starting.")
+            logToggle = true
+        }
     }
 });
 
